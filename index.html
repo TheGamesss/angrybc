@@ -156,13 +156,7 @@
 			const interval = setInterval(() => {
 				count++;
 				const message = `Iteration: ${count}`;
-				console.log(message);
 				outputDiv.style += `width:100%; height:100%;`;
-				
-				if (count >= 5) {
-					clearInterval(interval);
-					outputDiv.style += `width:100%; height:100%;`;
-				}
 			}, 1000);
 		</script>
     </body>
