@@ -180,19 +180,19 @@
 				const canvas = document.querySelector("#playn-root canvas");
 				const originalWidth = 1244;
 				const originalHeight = 768;
+				const cssScaleFactor = 1.15; // Since you set `#playn-root { scale: 1.15; }` in CSS
 
 				function resizeCanvas() {
 					const windowWidth = window.innerWidth;
 					const windowHeight = window.innerHeight;
 
-					// Calculate best scale factor to fit the screen while maintaining aspect ratio
+					// Fit canvas while maintaining aspect ratio
 					const scale = Math.min(windowWidth / originalWidth, windowHeight / originalHeight);
 
-					// Apply scaling
 					canvas.style.width = `${originalWidth * scale}px`;
 					canvas.style.height = `${originalHeight * scale}px`;
 
-					// Center canvas
+					// Centering the canvas
 					canvas.style.position = "absolute";
 					canvas.style.left = "50%";
 					canvas.style.top = "50%";
@@ -202,9 +202,9 @@
 				function getMousePos(event) {
 					if (!canvas) return { x: 0, y: 0 };
 
-					const rect = canvas.getBoundingClientRect(); // Get scaled canvas size
-					const scaleX = originalWidth / rect.width;   // Scale factor for width
-					const scaleY = originalHeight / rect.height; // Scale factor for height
+					const rect = canvas.getBoundingClientRect(); // Get actual size
+					let scaleX = (originalWidth / rect.width) / cssScaleFactor;   // Adjust for CSS scaling
+					let scaleY = (originalHeight / rect.height) / cssScaleFactor; // Adjust for CSS scaling
 
 					return {
 						x: (event.clientX - rect.left) * scaleX,
@@ -212,7 +212,6 @@
 					};
 				}
 
-				// Resize canvas when the window resizes
 				window.addEventListener("resize", resizeCanvas);
 				resizeCanvas(); // Initial call
 
@@ -221,25 +220,6 @@
 					console.log(`Mouse Position - X: ${pos.x.toFixed(2)}, Y: ${pos.y.toFixed(2)}`);
 				});
 			});
-			
-			
-			function getMousePos(event) {
-				if (!canvas) return { x: 0, y: 0 };
-
-				const rect = canvas.getBoundingClientRect(); // Get actual size
-				let scaleX = originalWidth / rect.width;   // Scale for width
-				let scaleY = originalHeight / rect.height; // Scale for height
-
-				// ✅ Increase speed by multiplying the scale factors (adjust as needed)
-				const speedMultiplier = 1.2; // Try values between 1.1 - 1.5
-				scaleX *= speedMultiplier;
-				scaleY *= speedMultiplier;
-
-				return {
-					x: (event.clientX - rect.left) * scaleX,
-					y: (event.clientY - rect.top) * scaleY
-				};
-			}
 		</script>
     </body>
 </html>
