@@ -62,16 +62,6 @@
 			padding: 0;
         }
 		
-		#playn-root canvas {
-			position: absolute;
-			width: 1244px;
-			height: 768px;
-			top: 50%;
-			left: 50%;
-			transform: translate(-50%, -50%);
-			display: block;
-		}
-		
 		html, body {
 			margin: 0;
 			padding: 0;
@@ -80,6 +70,16 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
+			background-color: black; /* Optional: Background color */
+			overflow: hidden;
+		}
+
+		#playn-root canvas {
+			position: absolute;
+			width: 100vw;
+			height: 100vh;
+			object-fit: contain; /* Ensures aspect ratio is maintained */
+			display: block;
 		}
         </style>
     </head>
@@ -174,9 +174,9 @@
 				function getMousePos(event) {
 					if (!canvas) return { x: 0, y: 0 };
 
-					const rect = canvas.getBoundingClientRect(); // Get canvas position & size
-					const scaleX = canvas.width / rect.width;   // Scale factor for width
-					const scaleY = canvas.height / rect.height; // Scale factor for height
+					const rect = canvas.getBoundingClientRect(); // Get actual canvas size on screen
+					const scaleX = 1244 / rect.width;   // Scale factor for width
+					const scaleY = 768 / rect.height;   // Scale factor for height
 
 					return {
 						x: (event.clientX - rect.left) * scaleX,
