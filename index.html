@@ -75,6 +75,7 @@
 		}
 
 		#playn-root {
+			position: relative;
 			width: 100vw;
 			height: 100vh;
 			display: flex;
@@ -83,13 +84,9 @@
 		}
 
 		#playn-root canvas {
-			width: 100%;
-			height: 100%;
-			max-width: 1244px;
-			max-height: 768px;
-			aspect-ratio: 1244 / 768;
-			object-fit: contain; /* Ensures correct aspect ratio */
 			display: block;
+			max-width: 100%;
+			max-height: 100%;
 		}
         </style>
     </head>
@@ -180,19 +177,43 @@
 		<script>
 			document.addEventListener("DOMContentLoaded", () => {
 				const canvas = document.querySelector("#playn-root canvas");
+				const originalWidth = 1244;
+				const originalHeight = 768;
+
+				function resizeCanvas() {
+					const windowWidth = window.innerWidth;
+					const windowHeight = window.innerHeight;
+
+					// Calculate best scale factor to fit the screen while maintaining aspect ratio
+					const scale = Math.min(windowWidth / originalWidth, windowHeight / originalHeight);
+
+					// Apply scaling
+					canvas.style.width = `${originalWidth * scale}px`;
+					canvas.style.height = `${originalHeight * scale}px`;
+
+					// Center canvas
+					canvas.style.position = "absolute";
+					canvas.style.left = "50%";
+					canvas.style.top = "50%";
+					canvas.style.transform = "translate(-50%, -50%)";
+				}
 
 				function getMousePos(event) {
 					if (!canvas) return { x: 0, y: 0 };
 
-					const rect = canvas.getBoundingClientRect(); // Get canvas size and position
-					const scaleX = 1244 / rect.width;   // Scale to original width
-					const scaleY = 768 / rect.height;   // Scale to original height
+					const rect = canvas.getBoundingClientRect(); // Get scaled canvas size
+					const scaleX = originalWidth / rect.width;   // Scale factor for width
+					const scaleY = originalHeight / rect.height; // Scale factor for height
 
 					return {
 						x: (event.clientX - rect.left) * scaleX,
 						y: (event.clientY - rect.top) * scaleY
 					};
 				}
+
+				// Resize canvas when the window resizes
+				window.addEventListener("resize", resizeCanvas);
+				resizeCanvas(); // Initial call
 
 				canvas.addEventListener("mousemove", (event) => {
 					const pos = getMousePos(event);
