@@ -202,24 +202,20 @@
 				function getMousePos(event) {
 					if (!canvas) return { x: 0, y: 0 };
 
-					const rect = canvas.getBoundingClientRect(); // Get actual size
-					let scaleX = (originalWidth / rect.width) / cssScaleFactor;   // Adjust for CSS scaling
-					let scaleY = (originalHeight / rect.height) / cssScaleFactor; // Adjust for CSS scaling
+					const rect = canvas.getBoundingClientRect();
+					let scaleX = (originalWidth / rect.width) / cssScaleFactor;
+					let scaleY = (originalHeight / rect.height) / cssScaleFactor;
+
+					// ✅ Increase mouse speed slightly by multiplying
+					const speedBoost = 1.1; // Adjust between 1.05 - 1.2 for fine-tuning
+					scaleX *= speedBoost;
+					scaleY *= speedBoost;
 
 					return {
 						x: (event.clientX - rect.left) * scaleX,
 						y: (event.clientY - rect.top) * scaleY
 					};
 				}
-
-				window.addEventListener("resize", resizeCanvas);
-				resizeCanvas(); // Initial call
-
-				canvas.addEventListener("mousemove", (event) => {
-					const pos = getMousePos(event);
-					console.log(`Mouse Position - X: ${pos.x.toFixed(2)}, Y: ${pos.y.toFixed(2)}`);
-				});
-			});
 		</script>
     </body>
 </html>
