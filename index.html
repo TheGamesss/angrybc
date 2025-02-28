@@ -221,6 +221,25 @@
 					console.log(`Mouse Position - X: ${pos.x.toFixed(2)}, Y: ${pos.y.toFixed(2)}`);
 				});
 			});
+			
+			
+			function getMousePos(event) {
+				if (!canvas) return { x: 0, y: 0 };
+
+				const rect = canvas.getBoundingClientRect(); // Get actual size
+				let scaleX = originalWidth / rect.width;   // Scale for width
+				let scaleY = originalHeight / rect.height; // Scale for height
+
+				// ✅ Increase speed by multiplying the scale factors (adjust as needed)
+				const speedMultiplier = 1.2; // Try values between 1.1 - 1.5
+				scaleX *= speedMultiplier;
+				scaleY *= speedMultiplier;
+
+				return {
+					x: (event.clientX - rect.left) * scaleX,
+					y: (event.clientY - rect.top) * scaleY
+				};
+			}
 		</script>
     </body>
 </html>
