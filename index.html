@@ -70,15 +70,25 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			background-color: black; /* Optional: Background color */
+			background-color: black; /* Optional */
 			overflow: hidden;
 		}
 
-		#playn-root canvas {
-			position: absolute;
+		#playn-root {
 			width: 100vw;
 			height: 100vh;
-			object-fit: contain; /* Ensures aspect ratio is maintained */
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
+
+		#playn-root canvas {
+			width: 100%;
+			height: 100%;
+			max-width: 1244px;
+			max-height: 768px;
+			aspect-ratio: 1244 / 768;
+			object-fit: contain; /* Ensures correct aspect ratio */
 			display: block;
 		}
         </style>
@@ -174,9 +184,9 @@
 				function getMousePos(event) {
 					if (!canvas) return { x: 0, y: 0 };
 
-					const rect = canvas.getBoundingClientRect(); // Get actual canvas size on screen
-					const scaleX = 1244 / rect.width;   // Scale factor for width
-					const scaleY = 768 / rect.height;   // Scale factor for height
+					const rect = canvas.getBoundingClientRect(); // Get canvas size and position
+					const scaleX = 1244 / rect.width;   // Scale to original width
+					const scaleY = 768 / rect.height;   // Scale to original height
 
 					return {
 						x: (event.clientX - rect.left) * scaleX,
@@ -186,7 +196,7 @@
 
 				canvas.addEventListener("mousemove", (event) => {
 					const pos = getMousePos(event);
-					console.log(`Mouse Position - X: ${pos.x}, Y: ${pos.y}`);
+					console.log(`Mouse Position - X: ${pos.x.toFixed(2)}, Y: ${pos.y.toFixed(2)}`);
 				});
 			});
 		</script>
