@@ -206,10 +206,11 @@
 					let scaleX = (originalWidth / rect.width) / cssScaleFactor;
 					let scaleY = (originalHeight / rect.height) / cssScaleFactor;
 
-					// ✅ Increase mouse speed slightly by multiplying
-					const speedBoost = 1.1; // Adjust between 1.05 - 1.2 for fine-tuning
-					scaleX *= speedBoost;
-					scaleY *= speedBoost;
+					// ✅ Adjust width and height speeds separately
+					const widthSpeedBoost = 1.2; // Increase if width feels slow
+					const heightSpeedBoost = 1.15; // Increase if height feels slow
+					scaleX *= widthSpeedBoost;
+					scaleY *= heightSpeedBoost;
 
 					return {
 						x: (event.clientX - rect.left) * scaleX,
