@@ -180,7 +180,7 @@
 				const canvas = document.querySelector("#playn-root canvas");
 				const originalWidth = 1244;
 				const originalHeight = 768;
-				const cssScaleFactor = 1.15; // Since you set `#playn-root { scale: 1.15; }` in CSS
+				const cssScaleFactor = 1.15; // Since #playn-root is scaled in CSS
 
 				function resizeCanvas() {
 					const windowWidth = window.innerWidth;
@@ -192,7 +192,7 @@
 					canvas.style.width = `${originalWidth * scale}px`;
 					canvas.style.height = `${originalHeight * scale}px`;
 
-					// Centering the canvas
+					// Center the canvas
 					canvas.style.position = "absolute";
 					canvas.style.left = "50%";
 					canvas.style.top = "50%";
@@ -203,12 +203,14 @@
 					if (!canvas) return { x: 0, y: 0 };
 
 					const rect = canvas.getBoundingClientRect();
+					
+					// Get scale factors (adjusted for CSS scale)
 					let scaleX = (originalWidth / rect.width) / cssScaleFactor;
 					let scaleY = (originalHeight / rect.height) / cssScaleFactor;
 
-					// ✅ Adjust width and height speeds separately
-					const widthSpeedBoost = 1.4; // Increase if width feels slow
-					const heightSpeedBoost = 1.2; // Increase if height feels slow
+					// ✅ Adjust width and height speed separately
+					const widthSpeedBoost = 1.12;  // Fine-tune horizontal speed
+					const heightSpeedBoost = 1.08; // Fine-tune vertical speed
 					scaleX *= widthSpeedBoost;
 					scaleY *= heightSpeedBoost;
 
@@ -217,6 +219,15 @@
 						y: (event.clientY - rect.top) * scaleY
 					};
 				}
+
+				window.addEventListener("resize", resizeCanvas);
+				resizeCanvas(); // Initial call
+
+				canvas.addEventListener("mousemove", (event) => {
+					const pos = getMousePos(event);
+					console.log(`Mouse Position - X: ${pos.x.toFixed(2)}, Y: ${pos.y.toFixed(2)}`);
+				});
+			});
 		</script>
     </body>
 </html>
